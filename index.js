@@ -14,16 +14,33 @@ var corsOptions = {
     origin: "http://localhost:8080"
 };
 
+var dbFile = require("./app/config/db.config");
+
+// db connection
+dbFile.conn.connect(function(err){
+    if (err) {
+        throw err;
+    } else {
+        console.log("Connected to MySql");
+    }
+});
+
+
+
+
 //app.use() tell the express object to use these dependencies
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({extended: true}));
 
 //routes for application
 
+
+
 app.get("/", function(req, res) {
     res.json({
         message: "Welcome to server side Node.js"
     });
+    
 });
 
 
@@ -31,5 +48,5 @@ app.get("/", function(req, res) {
 //set port and listen for all request
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, function() {
-    console.log("Server is running on port ${PORT}.")
+    console.log(`Server is running on port ${PORT}`);
 });
