@@ -36,3 +36,27 @@ var fs = require("fs");
 //     }
 // });
 
+
+//add course to db
+module.exports.addCourse = function addCourse(course) {
+    //calling the function to connect to db
+    dbFile.conn.connect(function (err) {
+        if (err) {
+            throw err;
+        } else {
+            console.log("Connected to MySql DB");
+            var sql = `INSERT INTO COURSE(COURSE_ID,COURSE_CODE,COURSE_NAME,DOCUMENT_UPLOAD) VALUES(${course.course_id},${course.course_code},"${course.course_name}",${course.document_upload})`;
+            console.log(sql);
+            dbFile.conn.query(sql, function (err, result) {
+                if (err) {
+                    throw err;
+                } else {
+                    console.log(result);
+                }
+            });
+        }
+    });
+    //calling the function to close the connection.
+    dbFile.conn.end();
+    console.log("Connection closed");
+}
