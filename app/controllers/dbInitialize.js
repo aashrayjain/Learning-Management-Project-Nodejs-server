@@ -17,6 +17,7 @@ var dbFile = require("../config/db.config");
 //                 console.log("Database created.");
 //             }
 //         });
+//          dbFile.conn.end();
 //     }
 // });
 
@@ -37,6 +38,7 @@ var dbFile = require("../config/db.config");
 //                 console.log("Table created.");
 //             }
 //         });
+//          dbFile.conn.end();
 //     }
 // });
 

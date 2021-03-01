@@ -1,0 +1,16 @@
+Hello @all,
+As discussed on call, we are giving you a case study to work upon, so that we can gauge your ability to learn & implement your coding tasks.
+
+You are required to work upon your assigned task (refer case study document), and come up with the end-product (an integrated, working web-application), having all the functionalities being implemented satisfactorily.
+
+You have to work as a assigned team and collaborate with your team members.For integration you have to use github  and proper commit message are required to be used.Create a repository in your github and add your team member into it ,divide your work and work as a team.
+
+Case study has color code defined for the task so pick your color of task by having discussion with your team members and start working on it.
+
+The timelines / deadlines associated with the above case-studies are given below :-
+
+Basic Html Prototype (designing of only Html pages & their linking) - 3rd March 2021 
+
+Review (db schema , diagramas , etc - refer document) - 4th March 2021 
+
+Submission (fully working web application) 8th March 2021
