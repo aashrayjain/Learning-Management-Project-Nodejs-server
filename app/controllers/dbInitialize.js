@@ -21,7 +21,7 @@ var dbFile = require("../config/db.config");
 //     }
 // });
 
-//Table Created
+//Course and User Table Created
 
 // dbFile.conn.connect(function(err) {
 //     if (err) {
