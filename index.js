@@ -16,6 +16,7 @@ var corsOptions = {
 
 var dbFile = require("./app/config/db.config");
 var courseController = require("./app/controllers/courseController");
+var userController = require('./app/controllers/userController');
 
 // // db connection
 // dbFile.conn.connect(function(err){
@@ -48,6 +49,7 @@ app.get('/', function(req, res) {
     // console.log(req)
 });
 
+//post request to add course
 app.post('/addCourses', function (req, res) {
     // res.send('Post request received');
     // console.log(req)
@@ -65,6 +67,20 @@ app.post('/addCourses', function (req, res) {
     res.send("Course added successfully.");
 });
 
+//get request to fetch all courses from db
+app.get('/getAllCourses', function (req, res) {
+    courseController.getAllCourses();
+    res.send("get hit");
+});
+
+//put request for updating the course of user
+app.put('/updateUserCourse/:user_id/:course_id', function (req, res) {
+    // console.log(req.params.user_id + " " + req.params.course_id);
+    var user_id = req.params.user_id;
+    var course_id = req.params.course_id;
+    userController.updateUserCourse(user_id, course_id);
+    res.send("User courses updated");
+});
 
 
 //set port and listen for all request

@@ -56,7 +56,10 @@ module.exports.addCourse = function addCourse(course) {
             });
         }
     });
-    //calling the function to close the connection.
-    dbFile.conn.end();
     console.log("Connection closed");
+}
+
+
+module.exports.getAllCourses = function getAllCourses(callback) {
+    
 }

@@ -31,3 +31,25 @@ var fs = require("fs");
 //     }
 // });
 
+
+//update user course in user table
+module.exports.updateUserCourse = function updateUserCourse(user_id, course_id) {
+    //calling the function to connect to db
+    dbFile.conn.connect(function(err) {
+        if (err) {
+            throw err;
+        } else {
+            console.log("Connected to MySql DB");
+            var sql = `UPDATE USER SET COURSE_ID=${course_id} WHERE USER_ID=${user_id}`;
+            console.log(sql);
+            dbFile.conn.query(sql, function (err, result) {
+                if (err) {
+                    throw err;
+                } else {
+                    console.log(result);
+                }
+            });
+        }
+    });
+    console.log("Connection closed");
+}
