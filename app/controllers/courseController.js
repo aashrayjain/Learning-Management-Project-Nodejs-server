@@ -4,6 +4,7 @@ var dbFile = require("../config/db.config");
 
 //fs module performs file operation in local computer
 var fs = require("fs");
+const { Console } = require("console");
 
 //dummy data added
 
@@ -56,10 +57,43 @@ module.exports.addCourse = function addCourse(course) {
             });
         }
     });
-    console.log("Connection closed");
 }
+
+//top store the courses from db
+class Course {
+    constructor(course_id, course_code, course_name, document_upload) {
+        this.course_id = course_id;
+        this.course_code = course_code;
+        this.course_name = course_name;
+        this.document_upload = document_upload;
+    }
+}
+
 
 
 module.exports.getAllCourses = function getAllCourses(callback) {
-    
+    var courses = []
+    courses = dbFile.conn.connect(function (err) {
+        if (err) {
+            throw err;
+        } else {
+            console.log("Connected to MySql DB");
+            var sql = "select * from course";
+            // console.log(sql);
+            dbFile.conn.query(sql, function (err, result) {
+                if (err) {
+                    throw err;
+                } else {
+                    console.log("Courses fetched");
+                    for (let i = 0; i < result.length; ++i) {
+                        courses[i] = new Course(result[i].COURSE_ID, result[i].COURSE_CODE, result[i].COURSE_NAME, result[i].DOCUMENT_UPLOAD);
+                        // console.log(courses[i]);
+                    }
+                    return course;
+                }
+            });
+        }
+    });
 }
+
+// module.exports.getAllCourses = getAllCourses;

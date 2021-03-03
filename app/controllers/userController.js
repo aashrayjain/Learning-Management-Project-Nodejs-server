@@ -51,5 +51,4 @@ module.exports.updateUserCourse = function updateUserCourse(user_id, course_id) 
             });
         }
     });
-    console.log("Connection closed");
 }

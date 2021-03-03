@@ -11,7 +11,7 @@ const cors = require("cors");
 const app = express();
 
 var corsOptions = {
-    origin: "http://localhost:8080"
+    origin: "http://localhost:4200"
 };
 
 var dbFile = require("./app/config/db.config");
@@ -51,15 +51,16 @@ app.get('/', function(req, res) {
 
 //post request to add course
 app.post('/addCourses', function (req, res) {
-    // res.send('Post request received');
-    // console.log(req)
+    console.log("Post hit");
+    console.log(req.body)
     var course = {
-        course_id: req.body.course_id,
-        course_code: req.body.course_code,
-        course_name: req.body.course_name,
-        document_upload: req.body.document_upload
+        course_id: req.body.courseId,
+        course_code: req.body.courseCode,
+        course_name: req.body.courseName,
+        // document_upload: req.body.document
+        document_upload: null
     };
-    // console.log(req.body);
+    console.log(course);
     // res.send(course);
 
     //calling function to add courses to db
@@ -69,8 +70,9 @@ app.post('/addCourses', function (req, res) {
 
 //get request to fetch all courses from db
 app.get('/getAllCourses', function (req, res) {
-    courseController.getAllCourses();
-    res.send("get hit");
+    var courses = courseController.getAllCourses()
+    console.log(courses)
+    res.send(courses);
 });
 
 //put request for updating the course of user
