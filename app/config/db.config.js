@@ -2,12 +2,12 @@
 // mysql2 is an api for connecting with db without downgrading your mysql db
 
 
-var mysql = require("mysql2"); 
+var mysql = require("mysql2");
 
 
 module.exports.conn = mysql.createConnection({  // conn is variable
-        host: "localhost",
-        user: "root",
-        password: "7389330515", // Change as per your mysql db
-        database: "learning_management_db"
-    });
+    host: "localhost",
+    user: "root",
+    password: "7389330515", // Change as per your mysql db
+    database: "learning_management_db"
+});

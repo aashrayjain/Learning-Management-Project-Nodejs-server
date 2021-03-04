@@ -38,7 +38,7 @@ const { Console, error, exception } = require("console");
 // });
 
 
-//add course to db
+//add course to db (working code)
 module.exports.addCourse = function addCourse(course, callback) {
     //calling the function to connect to db
 
@@ -64,7 +64,7 @@ module.exports.addCourse = function addCourse(course, callback) {
 }
 
 
-//getAllCourses
+//getAllCourses (Working code)
 module.exports.getCourse = function getCourse(callback) {
 
     //calling the function to connect to db
