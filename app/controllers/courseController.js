@@ -16,7 +16,7 @@ const { Console, error, exception } = require("console");
 //         var document = {
 //             file: fs.readFileSync("H:\\TATA Consultancy Services Ltd\\TCS Digital Internship\\Learning Management Project\\LMP-Project\\Learning-Management-Project-Nodejs-server\\asset\\ProjectDetails.txt")
 //         };
-        
+
 //         // var sql = `INSERT INTO COURSE(COURSE_ID, COURSE_CODE, COURSE_NAME, DOCUMENT_UPLOAD) VALUES(1,101,'Node.js',?)`;
 //         var courses = [
 //             [2, 102, 'Javascript', document.file],
@@ -41,7 +41,7 @@ const { Console, error, exception } = require("console");
 //add course to db
 module.exports.addCourse = function addCourse(course, callback) {
     //calling the function to connect to db
-    
+
     dbFile.conn.connect(function (err) {
         if (err) {
             // throw err;
@@ -63,41 +63,71 @@ module.exports.addCourse = function addCourse(course, callback) {
     });
 }
 
-//top store the courses from db
-class Course {
-    constructor(course_id, course_code, course_name, document_upload) {
-        this.course_id = course_id;
-        this.course_code = course_code;
-        this.course_name = course_name;
-        this.document_upload = document_upload;
-    }
-}
 
+//getAllCourses
+module.exports.getCourse = function getCourse(callback) {
 
-
-module.exports.getAllCourses = function getAllCourses(callback) {
-    var courses = []
-    courses = dbFile.conn.connect(function (err) {
+    //calling the function to connect to db
+    dbFile.conn.connect(function (err) {
         if (err) {
-            throw err;
+            callback(err);
         } else {
-            console.log("Connected to MySql DB");
-            var sql = "select * from course";
-            // console.log(sql);
+            var sql = "SELECT COURSE_CODE,COURSE_NAME FROM COURSE";
             dbFile.conn.query(sql, function (err, result) {
                 if (err) {
-                    throw err;
+                    callback(err);
                 } else {
-                    console.log("Courses fetched");
-                    for (let i = 0; i < result.length; ++i) {
-                        courses[i] = new Course(result[i].COURSE_ID, result[i].COURSE_CODE, result[i].COURSE_NAME, result[i].DOCUMENT_UPLOAD);
-                        // console.log(courses[i]);
+                    // console.log(result);
+                    var course = [];
+                    var c = {};
+                    for (var i = 0; i < result.length; ++i) {
+                        c = {
+                            courseId: result[i].COURSE_CODE,
+                            courseName: result[i].COURSE_NAME
+                        }
+                        course[i] = c;
                     }
-                    return course;
+                    callback(course);
                 }
             });
         }
     });
 }
 
-// module.exports.getAllCourses = getAllCourses;
+
+// //top store the courses from db
+// class Course {
+//     constructor(course_id, course_code, course_name, document_upload) {
+//         this.course_id = course_id;
+//         this.course_code = course_code;
+//         this.course_name = course_name;
+//         this.document_upload = document_upload;
+//     }
+// }
+
+
+
+// module.exports.getAllCourses = function getAllCourses(callback) {
+//     var courses = []
+//     courses = dbFile.conn.connect(function (err) {
+//         if (err) {
+//             throw err;
+//         } else {
+//             console.log("Connected to MySql DB");
+//             var sql = "select * from course";
+//             // console.log(sql);
+//             dbFile.conn.query(sql, function (err, result) {
+//                 if (err) {
+//                     throw err;
+//                 } else {
+//                     console.log("Courses fetched");
+//                     for (let i = 0; i < result.length; ++i) {
+//                         courses[i] = new Course(result[i].COURSE_ID, result[i].COURSE_CODE, result[i].COURSE_NAME, result[i].DOCUMENT_UPLOAD);
+//                         // console.log(courses[i]);
+//                     }
+//                     return course;
+//                 }
+//             });
+//         }
+//     });
+// }

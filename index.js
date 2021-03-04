@@ -33,7 +33,7 @@ var userController = require('./app/controllers/userController');
 app.use(cors(corsOptions));
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // parse application/json
 app.use(bodyParser.json());
@@ -41,7 +41,7 @@ app.use(bodyParser.json());
 
 //routes for application
 //get request
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
     res.json({
         message: "Welcome to server side Node.js"
     });
@@ -64,7 +64,7 @@ app.post('/addCourses', function (req, res) {
     // res.send(course);
 
     //calling function to add courses to db
-    courseController.addCourse(course, function(response) {
+    courseController.addCourse(course, function (response) {
         if (response === true) {
             res.json({
                 message: true
@@ -75,9 +75,22 @@ app.post('/addCourses', function (req, res) {
             });
         }
     });
-    
-    
 });
+
+//getAllCourse
+app.get('/getAllCourse', function (req, res) {
+    courseController.getCourse(function (course) {
+        res.json({ course: course });
+    });
+});
+
+//getAllUser
+app.get('/getAllUser', function (req, res) {
+    userController.getUser(function (user) {
+        res.json({ user: user });
+    });
+});
+
 
 //get request to fetch all courses from db
 app.get('/getAllCourses', function (req, res) {
@@ -98,6 +111,6 @@ app.put('/updateUserCourse/:user_id/:course_id', function (req, res) {
 
 //set port and listen for all request
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, function() {
+app.listen(PORT, function () {
     console.log(`Server is running on port ${PORT}`);
 });

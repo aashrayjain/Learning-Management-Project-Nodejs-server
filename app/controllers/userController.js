@@ -31,6 +31,36 @@ var fs = require("fs");
 //     }
 // });
 
+//getAllUser
+module.exports.getUser = function getUser(callback) {
+
+    //calling the function to connect to db
+    dbFile.conn.connect(function(err) {
+        if (err) {
+            callback(err);
+        } else {
+            var sql = "SELECT USER_ID,USERNAME FROM USER";
+            dbFile.conn.query(sql, function (err, result) {
+                if (err) {
+                    callback(err);
+                } else {
+                    // console.log(result);
+                    var user = [];
+                    var u = {};
+                    for (var i = 0; i < result.length; ++i) {
+                        u = {
+                            userId : result[i].USER_ID,
+                            userName : result[i].USERNAME
+                        }
+                        user[i] = u;
+                    }
+                    callback(user);
+                }
+            });
+        }
+    });
+}
+
 
 //update user course in user table
 module.exports.updateUserCourse = function updateUserCourse(user_id, course_id) {
