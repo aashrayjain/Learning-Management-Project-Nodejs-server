@@ -51,8 +51,8 @@ app.get('/', function(req, res) {
 
 //post request to add course
 app.post('/addCourses', function (req, res) {
-    console.log("Post hit");
-    console.log(req.body)
+    // console.log("Post hit");
+    // console.log(req.body)
     var course = {
         course_id: req.body.courseId,
         course_code: req.body.courseCode,
@@ -64,8 +64,19 @@ app.post('/addCourses', function (req, res) {
     // res.send(course);
 
     //calling function to add courses to db
-    courseController.addCourse(course);
-    res.send("Course added successfully.");
+    courseController.addCourse(course, function(response) {
+        if (response === true) {
+            res.json({
+                message: true
+            });
+        } else {
+            res.json({
+                err: response
+            });
+        }
+    });
+    
+    
 });
 
 //get request to fetch all courses from db

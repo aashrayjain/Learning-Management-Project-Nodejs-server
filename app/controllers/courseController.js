@@ -4,7 +4,7 @@ var dbFile = require("../config/db.config");
 
 //fs module performs file operation in local computer
 var fs = require("fs");
-const { Console } = require("console");
+const { Console, error, exception } = require("console");
 
 //dummy data added
 
@@ -39,20 +39,24 @@ const { Console } = require("console");
 
 
 //add course to db
-module.exports.addCourse = function addCourse(course) {
+module.exports.addCourse = function addCourse(course, callback) {
     //calling the function to connect to db
+    
     dbFile.conn.connect(function (err) {
         if (err) {
-            throw err;
+            // throw err;
+            callback(err);
         } else {
             console.log("Connected to MySql DB");
             var sql = `INSERT INTO COURSE(COURSE_ID,COURSE_CODE,COURSE_NAME,DOCUMENT_UPLOAD) VALUES(${course.course_id},${course.course_code},"${course.course_name}",${course.document_upload})`;
             console.log(sql);
             dbFile.conn.query(sql, function (err, result) {
                 if (err) {
-                    throw err;
+                    // throw err;
+                    callback(err);
                 } else {
                     console.log(result);
+                    callback(true)
                 }
             });
         }
