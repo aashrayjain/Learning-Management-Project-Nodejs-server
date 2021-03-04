@@ -59,7 +59,6 @@ app.post('/addCourses', function (req, res) {
 
 //getAllCourse (working code)
 app.get('/getAllCourse', function (req, res) {
-    console.log("Get all Courses hit")
     courseController.getCourse(function (course) {
         res.json({ course: course });
     });
@@ -74,11 +73,11 @@ app.get('/getAllUser', function (req, res) {
 
 
 //get request to fetch all courses from db (working code)
-app.get('/getAllCourses', function (req, res) {
-    var courses = courseController.getAllCourses()
-    console.log(courses)
-    res.send(courses);
-});
+// app.get('/getAllCourses', function (req, res) {
+//     var courses = courseController.getAllCourses()
+//     console.log(courses)
+//     res.send(courses);
+// });
 
 //put request for updating the course of user (working code)
 app.put('/updateUserCourse/:user_id/:course_code', function (req, res) {
