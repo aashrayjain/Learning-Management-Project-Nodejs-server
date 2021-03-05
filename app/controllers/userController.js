@@ -39,7 +39,7 @@ module.exports.getUser = function getUser(callback) {
         if (err) {
             callback(err);
         } else {
-            var sql = "SELECT USER_ID,USERNAME FROM USER";
+            var sql = "SELECT USER_ID,USERNAME FROM USER ";
             dbFile.conn.query(sql, function (err, result) {
                 if (err) {
                     callback(err);
@@ -181,6 +181,36 @@ module.exports.deleteUserById = function deleteUserById(userId, callback) {
                     callback(err);
                 } else {
                     callback(result.affectedRows);
+                }
+            });
+        }
+    });
+}
+
+
+module.exports.getUserById = function getUserById(userId, callback) {
+
+    //calling the function to connect to db
+    dbFile.conn.connect(function (err) {
+        if (err) {
+            callback(err);
+        } else {
+            var sql = `SELECT USER_ID,USERNAME FROM USER WHERE USER_ID=${userId}`;
+            dbFile.conn.query(sql, function (err, result) {
+                if (err) {
+                    callback(err);
+                } else {
+                    // console.log(result);
+                    var user = [];
+                    var u = {};
+                    for (var i = 0; i < result.length; ++i) {
+                        u = {
+                            userId: result[i].USER_ID,
+                            userName: result[i].USERNAME
+                        }
+                        user[i] = u;
+                    }
+                    callback(user);
                 }
             });
         }

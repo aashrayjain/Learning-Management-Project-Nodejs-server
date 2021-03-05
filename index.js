@@ -95,7 +95,7 @@ app.get('/getAllCourseDetails', function (req, res) {
     console.log("You hit getAllCoursesDetails");
     courseController.getAllCourseDetails(function (response) {
         // console.log(response);
-        res.json({ courses: response });
+        res.json({courses: response});
     })
 });
 
@@ -104,7 +104,15 @@ app.delete('/deleteCourseById/:courseId', function (req, res) {
     console.log("delete hit");
     var courseId = req.params.courseId;
     courseController.deleteCourseById(courseId, function (response) {
-        res.json({ message: response });
+        res.json({message: response});
+    });
+});
+
+app.get('/getUserById/:userId', function (req, res) {
+    console.log("view hit");
+    var userId = req.params.userId;
+    userController.getUserById(userId, function (response) {
+        res.json({message: response});
     });
 });
 
@@ -114,10 +122,9 @@ app.put('/editTitleOfCourse', function (req, res) {
     var courseId = req.body.courseId;
     var courseName = req.body.courseName;
     courseController.updateCourseTitle(courseId, courseName, function (response) {
-        res.json({ message: response });
+        res.json({message: response});
     });
 });
-
 
 //get requets for all user details (working code)
 app.get('/getAllUserDetails', function (req, res) {
@@ -189,7 +196,6 @@ app.get('/', function (req, res) {
     console.log('You hit the server with get request.')
     // console.log(req)
 });
-
 
 
 
