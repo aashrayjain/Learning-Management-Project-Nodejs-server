@@ -72,13 +72,6 @@ app.get('/getAllUser', function (req, res) {
 });
 
 
-//get request to fetch all courses from db (working code)
-// app.get('/getAllCourses', function (req, res) {
-//     var courses = courseController.getAllCourses()
-//     console.log(courses)
-//     res.send(courses);
-// });
-
 //put request for updating the course of user (working code)
 app.put('/updateUserCourse/:user_id/:course_code', function (req, res) {
     // console.log(req.params.user_id + " " + req.params.course_id);
@@ -97,6 +90,35 @@ app.put('/updateUserCourse/:user_id/:course_code', function (req, res) {
 });
 
 
+//get requets for all course details (working code)
+app.get('/getAllCourseDetails', function (req, res) {
+    console.log("You hit getAllCoursesDetails");
+    courseController.getAllCourseDetails(function (response) {
+        // console.log(response);
+        res.json({courses: response});
+    })
+});
+
+// delete course from db
+app.delete('/deleteCourseById/:courseId', function (req, res) {
+    console.log("delete hit");
+    var courseId = req.params.courseId;
+    courseController.deleteCourseById(courseId, function (response) {
+        res.json({message: response});
+    });
+});
+
+//edit title of course
+app.put('/editTitleOfCourse', function (req, res) {
+    console.log("Title hit");
+    var courseId = req.body.courseId;
+    var courseName = req.body.courseName;
+    courseController.updateCourseTitle(courseId, courseName, function (response) {
+        res.json({message: response});
+    });
+});
+
+
 //get request
 app.get('/', function (req, res) {
     res.json({
@@ -105,6 +127,8 @@ app.get('/', function (req, res) {
     console.log('You hit the server with get request.')
     // console.log(req)
 });
+
+
 
 //set port and listen for all request
 const PORT = process.env.PORT || 8080;

@@ -94,40 +94,92 @@ module.exports.getCourse = function getCourse(callback) {
     });
 }
 
+// get all course details(working code)
+module.exports.getAllCourseDetails = function getAllCourseDetails(callback) {
+    //calling the function to connect to db
 
-// //top store the courses from db
-// class Course {
-//     constructor(course_id, course_code, course_name, document_upload) {
-//         this.course_id = course_id;
-//         this.course_code = course_code;
-//         this.course_name = course_name;
-//         this.document_upload = document_upload;
-//     }
-// }
+    dbFile.conn.connect(function (err) {
+        if (err) {
+            callback(err);
+        } else {
+            console.log("Connected to MySql DB");
+            var sql = "SELECT * FROM COURSE";
+            console.log(sql);
+            dbFile.conn.query(sql, function (err, result) {
+                if (err) {
+                    callback(err);
+                } else {
+                    console.log("Courses fetched");
+                    var courses = [];
+                    var course = {};
+                    for (let i = 0; i < result.length; ++i) {
+                        course = {
+                            courseId: result[i].COURSE_ID,
+                            courseCode: result[i].COURSE_CODE,
+                            courseName: result[i].COURSE_NAME,
+                            documentUpload: result[i].DOCUMENT_UPLOAD,
+                            creationDate: result[i].CREATION_DATE
+                        };
+                        courses[i] = course;
+                        // console.log(courses[i]);
+                    }
+                    callback(courses);
+                }
+            });
+        }
+    });
+}
 
 
+//delete course by id
+module.exports.deleteCourseById = function deleteCourseById(courseId, callback) {
 
-// module.exports.getAllCourses = function getAllCourses(callback) {
-//     var courses = []
-//     courses = dbFile.conn.connect(function (err) {
-//         if (err) {
-//             throw err;
-//         } else {
-//             console.log("Connected to MySql DB");
-//             var sql = "select * from course";
-//             // console.log(sql);
-//             dbFile.conn.query(sql, function (err, result) {
-//                 if (err) {
-//                     throw err;
-//                 } else {
-//                     console.log("Courses fetched");
-//                     for (let i = 0; i < result.length; ++i) {
-//                         courses[i] = new Course(result[i].COURSE_ID, result[i].COURSE_CODE, result[i].COURSE_NAME, result[i].DOCUMENT_UPLOAD);
-//                         // console.log(courses[i]);
-//                     }
-//                     return course;
-//                 }
-//             });
-//         }
-//     });
-// }
+     //calling the function to connect to db
+    dbFile.conn.connect(function (err) {
+        if (err) {
+            callback(err);
+        } else {
+            console.log("Connected to MySql DB");
+            var sql1 = `DELETE FROM USERCOURSES WHERE COURSE_ID=${courseId}`;
+            dbFile.conn.query(sql1, function (err, result) {
+                if (err) {
+                    callback(err);
+                } else {
+                    console.log("UserCourses Table: ", result.affectedRows);
+                }
+            });
+            var sql = `DELETE FROM COURSE WHERE COURSE_ID=${courseId}`;
+            console.log(sql);
+            dbFile.conn.query(sql, function (err, result) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(result.affectedRows);
+                }
+            });
+        }
+    });
+}
+
+
+//edit title of course
+module.exports.updateCourseTitle = function updateCourseTitle(courseId, courseName, callback) {
+
+    //calling the function to connect to db
+   dbFile.conn.connect(function (err) {
+       if (err) {
+           callback(err);
+       } else {
+           console.log("Connected to MySql DB");
+           var sql = `UPDATE COURSE SET COURSE_NAME="${courseName}" WHERE COURSE_ID=${courseId}`;
+           console.log(sql);
+           dbFile.conn.query(sql, function (err, result) {
+               if (err) {
+                   callback(err);
+               } else {
+                   callback(result.affectedRows);
+               }
+           });
+       }
+   });
+}
