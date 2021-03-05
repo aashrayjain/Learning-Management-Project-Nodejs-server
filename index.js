@@ -95,7 +95,7 @@ app.get('/getAllCourseDetails', function (req, res) {
     console.log("You hit getAllCoursesDetails");
     courseController.getAllCourseDetails(function (response) {
         // console.log(response);
-        res.json({courses: response});
+        res.json({ courses: response });
     })
 });
 
@@ -104,7 +104,7 @@ app.delete('/deleteCourseById/:courseId', function (req, res) {
     console.log("delete hit");
     var courseId = req.params.courseId;
     courseController.deleteCourseById(courseId, function (response) {
-        res.json({message: response});
+        res.json({ message: response });
     });
 });
 
@@ -114,10 +114,72 @@ app.put('/editTitleOfCourse', function (req, res) {
     var courseId = req.body.courseId;
     var courseName = req.body.courseName;
     courseController.updateCourseTitle(courseId, courseName, function (response) {
-        res.json({message: response});
+        res.json({ message: response });
     });
 });
 
+
+//get requets for all user details (working code)
+app.get('/getAllUserDetails', function (req, res) {
+    console.log("You hit getAllUserDetails");
+    userController.getAllUserDetails(function (response) {
+        // console.log(response);
+        res.json({ courses: response });
+    })
+});
+
+// delete user from db
+app.delete('/deleteUserById/:userId', function (req, res) {
+    console.log("delete hit");
+    var userId = req.params.userId;
+    userController.deleteUserById(userId, function (response) {
+        res.json({ message: response });
+    });
+});
+
+
+//post request for adding user
+app.post('/addNewUser', function (req, res) {
+    var date = new Date(req.body.creationDate);
+    var d = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+    var user = {
+        userId: req.body.userId,
+        userName: req.body.userName,
+        creationDate: d,
+        password: req.body.password,
+        userType: req.body.userType
+    };
+    console.log(user);
+    //calling function to add user to db
+    userController.addNewUser(user, function (response) {
+        if (response === true) {
+            res.json({
+                message: true
+            });
+        } else {
+            res.json({
+                err: response
+            });
+        }
+    });
+});
+
+//edit title of course
+app.put('/editUser', function (req, res) {
+    console.log("Edit user hit");
+    var date = new Date(req.body.creationDate);
+    var d = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+    var user = {
+        userId: req.body.userId,
+        userName: req.body.userName,
+        creationDate: d,
+        password: req.body.password,
+        userType: req.body.userType
+    };
+    userController.updateUser(user, function (response) {
+        res.json({ message: response });
+    });
+});
 
 //get request
 app.get('/', function (req, res) {
@@ -127,6 +189,7 @@ app.get('/', function (req, res) {
     console.log('You hit the server with get request.')
     // console.log(req)
 });
+
 
 
 

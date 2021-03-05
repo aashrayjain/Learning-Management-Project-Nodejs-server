@@ -97,3 +97,123 @@ module.exports.updateUserCourse = function updateUserCourse(userCourse, user_id,
         }
     });
 }
+
+
+// get all user details(working code)
+module.exports.getAllUserDetails = function getAllUserDetails(callback) {
+    //calling the function to connect to db
+
+    dbFile.conn.connect(function (err) {
+        if (err) {
+            callback(err);
+        } else {
+            console.log("Connected to MySql DB");
+            var sql = "SELECT * FROM USER";
+            console.log(sql);
+            dbFile.conn.query(sql, function (err, result) {
+                if (err) {
+                    callback(err);
+                } else {
+                    console.log("Users fetched");
+                    var users = [];
+                    var user = {};
+                    for (let i = 0; i < result.length; ++i) {
+                        user = {
+                            userId: result[i].USER_ID,
+                            userName: result[i].USERNAME,
+                            creationDate: result[i].CREATION_DATE,
+                            userType: result[i].USER_TYPE
+                        };
+                        users[i] = user;
+                    }
+                    callback(users);
+                }
+            });
+        }
+    });
+}
+
+//add user to db (working code)
+module.exports.addNewUser = function addNewUser(user, callback) {
+    //calling the function to connect to db
+
+    dbFile.conn.connect(function (err) {
+        if (err) {
+            callback(err);
+        } else {
+            console.log("Connected to MySql DB");
+            var sql = `INSERT INTO USER(USER_ID,USERNAME,CREATION_DATE,PASSWORD,USER_TYPE) VALUES(${user.userId},"${user.userName}","${user.creationDate}","${user.password}","${user.userType}")`;
+            console.log(sql);
+            dbFile.conn.query(sql, function (err, result) {
+                if (err) {
+                    callback(err);
+                } else {
+                    console.log(result);
+                    callback(true)
+                }
+            });
+        }
+    });
+}
+
+
+//delete user by id
+module.exports.deleteUserById = function deleteUserById(userId, callback) {
+
+    //calling the function to connect to db
+    dbFile.conn.connect(function (err) {
+        if (err) {
+            callback(err);
+        } else {
+            console.log("Connected to MySql DB");
+            var sql1 = `DELETE FROM USERCOURSES WHERE USER_ID=${userId}`;
+            dbFile.conn.query(sql1, function (err, result) {
+                if (err) {
+                    callback(err);
+                } else {
+                    console.log("UserCourses Table: ", result.affectedRows);
+                }
+            });
+            var sql = `DELETE FROM USER WHERE USER_ID=${userId}`;
+            console.log(sql);
+            dbFile.conn.query(sql, function (err, result) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(result.affectedRows);
+                }
+            });
+        }
+    });
+}
+
+//edit user table
+module.exports.updateUser = function updateUser(user, callback) {
+
+    //calling the function to connect to db
+    dbFile.conn.connect(function (err) {
+        if (err) {
+            callback(err);
+        } else {
+            console.log("Connected to MySql DB");
+            var sql1 = `UPDATE USERCOURSES SET USERNAME="${user.userName}" WHERE USER_ID=${user.userId}`;
+            console.log(sql1)
+            dbFile.conn.query(sql1, function (err, res) {
+                if (err) {
+                    callback(err);
+                } else {
+                    console.log("Row affected", res.affectedRows);
+                }
+            });
+            var sql = `UPDATE USER SET USERNAME="${user.userName}",CREATION_DATE="${user.creationDate}",PASSWORD="${user.password}",USER_TYPE="${user.userType}" WHERE USER_ID=${user.userId}`;
+            console.log(sql);
+            dbFile.conn.query(sql, function (err, result) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(result.affectedRows);
+                }
+            });
+        }
+    });
+}

@@ -47,8 +47,10 @@ module.exports.addCourse = function addCourse(course, callback) {
             // throw err;
             callback(err);
         } else {
+            var date = new Date();
+            var d = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
             console.log("Connected to MySql DB");
-            var sql = `INSERT INTO COURSE(COURSE_ID,COURSE_CODE,COURSE_NAME,DOCUMENT_UPLOAD) VALUES(${course.course_id},${course.course_code},"${course.course_name}",${course.document_upload})`;
+            var sql = `INSERT INTO COURSE(COURSE_ID,COURSE_CODE,COURSE_NAME,DOCUMENT_UPLOAD,CREATION_DATE) VALUES(${course.course_id},${course.course_code},"${course.course_name}",${course.document_upload},"${d}")`;
             console.log(sql);
             dbFile.conn.query(sql, function (err, result) {
                 if (err) {
@@ -120,6 +122,9 @@ module.exports.getAllCourseDetails = function getAllCourseDetails(callback) {
                             documentUpload: result[i].DOCUMENT_UPLOAD,
                             creationDate: result[i].CREATION_DATE
                         };
+                        var date = new Date(course.creationDate);
+                        var d = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+                        course.creationDate = d;
                         courses[i] = course;
                         // console.log(courses[i]);
                     }
