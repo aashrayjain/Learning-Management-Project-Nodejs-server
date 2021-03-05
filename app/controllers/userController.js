@@ -235,7 +235,7 @@ module.exports.updateUser = function updateUser(user, callback) {
                     console.log("Row affected", res.affectedRows);
                 }
             });
-            var sql = `UPDATE USER SET USERNAME="${user.userName}",CREATION_DATE="${user.creationDate}",PASSWORD="${user.password}",USER_TYPE="${user.userType}" WHERE USER_ID=${user.userId}`;
+            var sql = `UPDATE USER SET USERNAME="${user.userName}",CREATION_DATE="${user.creation_date}" WHERE USER_ID=${user.userId}`;
             console.log(sql);
             dbFile.conn.query(sql, function (err, result) {
                 if (err) {

@@ -174,14 +174,11 @@ app.post('/addNewUser', function (req, res) {
 //edit title of course
 app.put('/editUser', function (req, res) {
     console.log("Edit user hit");
-    var date = new Date(req.body.creationDate);
-    var d = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+   
     var user = {
         userId: req.body.userId,
         userName: req.body.userName,
-        creationDate: d,
-        password: req.body.password,
-        userType: req.body.userType
+        creation_date: req.body.creation_date,
     };
     userController.updateUser(user, function (response) {
         res.json({ message: response });
