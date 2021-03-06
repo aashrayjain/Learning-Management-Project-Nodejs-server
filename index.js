@@ -124,12 +124,20 @@ app.get('/getUserCourses/:userId', function (req, res) {
     });
 });
 
+app.get('/getCourseById/:courseId', function (req, res) {
+    var courseId = req.params.courseId;
+    courseController.getCourseById(courseId, function (response) {
+        res.json({message: response});
+    });
+});
+
 //edit title of course
 app.put('/editTitleOfCourse', function (req, res) {
     console.log("Title hit");
     var courseId = req.body.courseId;
     var courseName = req.body.courseName;
-    courseController.updateCourseTitle(courseId, courseName, function (response) {
+    var creationDate = req.body.creationDate;
+    courseController.updateCourseTitle(courseId, courseName,creationDate, function (response) {
         res.json({message: response});
     });
 });
