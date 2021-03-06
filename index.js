@@ -116,6 +116,14 @@ app.get('/getUserById/:userId', function (req, res) {
     });
 });
 
+app.get('/getUserCourses/:userId', function (req, res) {
+    //console.log("view hit");
+    var userId = req.params.userId;
+    userController.getUserCourses(userId, function (response) {
+        res.json({message: response});
+    });
+});
+
 //edit title of course
 app.put('/editTitleOfCourse', function (req, res) {
     console.log("Title hit");

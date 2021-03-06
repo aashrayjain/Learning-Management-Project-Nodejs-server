@@ -217,6 +217,41 @@ module.exports.getUserById = function getUserById(userId, callback) {
     });
 }
 
+module.exports.getUserCourses = function getUserCourses(userId, callback) {
+
+    //calling the function to connect to db
+    dbFile.conn.connect(function (err) {
+        if (err) {
+            callback(err);
+        } else {
+            var sql = `SELECT UC.USER_ID,UC.USERNAME,UC.COURSE_CODE,C.COURSE_NAME 
+            FROM USERCOURSES UC INNER JOIN COURSE C
+            ON UC.COURSE_ID = C.COURSE_ID
+            WHERE UC.USER_ID=${userId}`;
+            dbFile.conn.query(sql, function (err, result) {
+                if (err) {
+                    callback(err);
+                } else {
+                    // console.log(result);
+                    var user = [];
+                    var u = {};
+                    for (var i = 0; i < result.length; ++i) {
+                        u = {
+                            userId: result[i].USER_ID,
+                            userName: result[i].USERNAME,
+                            courseCode: result[i].COURSE_CODE,
+                            courseName: result[i].COURSE_NAME
+                        }
+                        user[i] = u;
+                    }
+                    console.log(user);
+                    callback(user);
+                }
+            });
+        }
+    });
+}
+
 //edit user table
 module.exports.updateUser = function updateUser(user, callback) {
 
