@@ -67,7 +67,7 @@ module.exports.addCourse = function addCourse(course, callback) {
 
 
 //getAllCourses (Working code)
-module.exports.getCourseById = function getCourseById(courseId,callback) {
+module.exports.getCourseById = function getCourseById(courseId, callback) {
 
     //calling the function to connect to db
     dbFile.conn.connect(function (err) {
@@ -86,6 +86,36 @@ module.exports.getCourseById = function getCourseById(courseId,callback) {
                         c = {
                             courseName: result[i].COURSE_NAME,
                             courseCode: result[i].COURSE_CODE
+                        }
+                        course[i] = c;
+                    }
+                    callback(course);
+                }
+            });
+        }
+    });
+}
+
+//getAllCourses (Working code)
+module.exports.getCourse = function getCourse(callback) {
+
+    //calling the function to connect to db
+    dbFile.conn.connect(function (err) {
+        if (err) {
+            callback(err);
+        } else {
+            var sql = "SELECT COURSE_CODE,COURSE_NAME FROM COURSE";
+            dbFile.conn.query(sql, function (err, result) {
+                if (err) {
+                    callback(err);
+                } else {
+                    // console.log(result);
+                    var course = [];
+                    var c = {};
+                    for (var i = 0; i < result.length; ++i) {
+                        c = {
+                            courseId: result[i].COURSE_CODE,
+                            courseName: result[i].COURSE_NAME
                         }
                         course[i] = c;
                     }
@@ -139,7 +169,7 @@ module.exports.getAllCourseDetails = function getAllCourseDetails(callback) {
 //delete course by id
 module.exports.deleteCourseById = function deleteCourseById(courseId, callback) {
 
-     //calling the function to connect to db
+    //calling the function to connect to db
     dbFile.conn.connect(function (err) {
         if (err) {
             callback(err);
@@ -168,23 +198,23 @@ module.exports.deleteCourseById = function deleteCourseById(courseId, callback) 
 
 
 //edit title of course
-module.exports.updateCourseTitle = function updateCourseTitle(courseId, courseName, creationDate,callback) {
+module.exports.updateCourseTitle = function updateCourseTitle(courseId, courseName, creationDate, callback) {
 
     //calling the function to connect to db
-   dbFile.conn.connect(function (err) {
-       if (err) {
-           callback(err);
-       } else {
-           console.log("Connected to MySql DB");
-           var sql = `UPDATE COURSE SET COURSE_NAME="${courseName}",CREATION_DATE="${creationDate}"  WHERE COURSE_ID=${courseId}`;
-           console.log(sql);
-           dbFile.conn.query(sql, function (err, result) {
-               if (err) {
-                   callback(err);
-               } else {
-                   callback(result.affectedRows);
-               }
-           });
-       }
-   });
+    dbFile.conn.connect(function (err) {
+        if (err) {
+            callback(err);
+        } else {
+            console.log("Connected to MySql DB");
+            var sql = `UPDATE COURSE SET COURSE_NAME="${courseName}",CREATION_DATE="${creationDate}"  WHERE COURSE_ID=${courseId}`;
+            console.log(sql);
+            dbFile.conn.query(sql, function (err, result) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(result.affectedRows);
+                }
+            });
+        }
+    });
 }
