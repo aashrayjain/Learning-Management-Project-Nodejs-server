@@ -96,6 +96,39 @@ module.exports.getCourseById = function getCourseById(courseId, callback) {
     });
 }
 
+module.exports.searchCourse = function searchCourse(title, callback) {
+
+    //calling the function to connect to db
+    dbFile.conn.connect(function (err) {
+        if (err) {
+            callback(err);
+        } else {
+            // console.log("search");
+            var sql = `SELECT COURSE_ID,COURSE_NAME FROM COURSE WHERE COURSE_NAME='${title}'`;
+            // console.log(sql);
+            dbFile.conn.query(sql, function (err, result) {
+                if (err) {
+                    callback(err);
+                } else {
+                    // console.log(result);
+                    var course = [];
+                    var c = {};
+                    for (var i = 0; i < result.length; ++i) {
+                        c = {
+                            courseId: result[i].COURSE_ID,
+                            courseName: result[i].COURSE_NAME
+                           
+                        }
+                        course[i] = c;
+                    }
+                    callback(course);
+                }
+            });
+        }
+    });
+}
+
+
 //getAllCourses (Working code)
 module.exports.getCourse = function getCourse(callback) {
 

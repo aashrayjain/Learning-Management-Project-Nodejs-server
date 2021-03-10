@@ -131,6 +131,13 @@ app.get('/getCourseById/:courseId', function (req, res) {
     });
 });
 
+app.get('/searchCourse/:title', function (req, res) {
+    var title = req.params.title;
+    courseController.searchCourse(title, function (response) {
+        res.json({message: response});
+    });
+});
+
 //edit title of course
 app.put('/editTitleOfCourse', function (req, res) {
     console.log("Title hit");
